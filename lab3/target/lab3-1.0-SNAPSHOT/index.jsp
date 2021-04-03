@@ -1,18 +1,18 @@
-<%@ page import="com.example.lab3.MyBean" %>
 <%@ page import="javax.naming.InitialContext" %>
 <%@ page import="javax.naming.Context" %>
+<%@ page import="com.example.lab3.EJBDemo" %>
 
 <%!
-    MyBean myBean;
+    EJBDemo myBean;
 %>
 
 <%
     Context context = null;
     try {
         context = new InitialContext();
-        myBean = (MyBean) context.lookup("java:module/MyBean");
-    }
-    catch(Exception e) {
+
+        myBean = (EJBDemo) context.lookup("java:module/MyBean");
+    } catch(Exception e) {
         e.printStackTrace();
     }
 %>
@@ -49,10 +49,15 @@
             padding: 4px;
             text-align: center;
         }
-        input, button {
+        input, button, textarea {
             display: inline-block;
             padding: 4px;
-            width: 46%;
+            width: 100%;
+        }
+
+        textarea {
+            height: 50px;
+            resize: none;
         }
 
         button[type="submit"] {
@@ -68,9 +73,49 @@
             text-align: center;
             font-size: 18px;
         }
+        .user-status {
+            margin: 10px 0;
+        }
     </style>
 </head>
 <body>
-    <p1><%= "Hello World!" %> 3</p1>
+
+    <div class="container">
+        <%
+            boolean isPost = "POST".equals(request.getMethod());
+
+            String message = "";
+
+            String v1 = null;
+            String v2 = null;
+
+            if(isPost) {
+
+                v1 = request.getParameter("login");
+                v2 = request.getParameter("pass");
+
+                myBean.login(v1, v2);
+            }
+        %>
+
+        <div class="message-block">
+            <%= message %>
+        </div>
+
+        <div class="user-status">
+            <%= myBean.getMessage( v1 ) %>
+        </div>
+
+        <form class="form-select-button" action="index.jsp" method="post">
+            <input type="text" name="login" maxlength="50" placeholder="Login is..." value="login">
+            <br />
+            <br />
+            <input type="password" name="pass" maxlength="50" placeholder="Password is..." value="1">
+            <br />
+            <br />
+            <button type="submit">Send</button>
+        </form>
+    </div>
+
 </body>
 </html>
