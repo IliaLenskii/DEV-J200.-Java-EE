@@ -1,17 +1,37 @@
+<%@ page session="true" %>
 <%@ page import="javax.naming.InitialContext" %>
 <%@ page import="javax.naming.Context" %>
 <%@ page import="com.example.lab3.EJBDemo" %>
 
 <%!
     EJBDemo myBean;
+    String SESSION_KEY = "sdfdg34577ff";
 %>
 
 <%
+
     Context context = null;
+
+    Context context2 = null;
+    EJBDemo myBeanSession = (EJBDemo) request.getSession().getAttribute(SESSION_KEY);
+
+    if(myBeanSession == null) {
+
+        try {
+            context2 = new InitialContext();
+
+            myBeanSession = (EJBDemo) context2.lookup("java:module/Lab3");
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+
+        request.getSession().setAttribute(SESSION_KEY, myBeanSession);
+    }
+
     try {
         context = new InitialContext();
 
-        myBean = (EJBDemo) context.lookup("java:module/MyBean");
+        myBean = (EJBDemo) context.lookup("java:module/Lab3");
     } catch(Exception e) {
         e.printStackTrace();
     }

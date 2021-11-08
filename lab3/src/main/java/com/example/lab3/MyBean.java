@@ -4,10 +4,12 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.ejb.PostActivate;
 import javax.ejb.PrePassivate;
+import javax.ejb.Remote;
 import javax.ejb.Stateful;
 import java.util.HashMap;
 
-@Stateful
+@Stateful(name = "Lab3")
+@Remote(EJBDemo.class)
 public class MyBean implements EJBDemo {
     private boolean isAuthorized = false;
     private HashMap<String, Integer> showCounter = new HashMap<>();
