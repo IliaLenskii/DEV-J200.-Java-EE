@@ -4,36 +4,44 @@
 <%@ page import="com.example.lab3.EJBDemo" %>
 
 <%!
-    EJBDemo myBean;
-    String SESSION_KEY = "sdfdg34577ff";
+    EJBDemo myBeanSession;
+    String SESSION_KEY = "__LAB3__";
+    boolean isPost = false;
+    String message = "";
+    String v1 = null;
+    String v2 = null;
+    Context context = null;
+    HttpSession session = null;
 %>
 
 <%
+    session = request.getSession(true);
+    isPost = "POST".equals(request.getMethod());
 
-    Context context = null;
-
-    Context context2 = null;
-    EJBDemo myBeanSession = (EJBDemo) request.getSession().getAttribute(SESSION_KEY);
+    myBeanSession = (EJBDemo) session.getAttribute(SESSION_KEY);
 
     if(myBeanSession == null) {
 
         try {
-            context2 = new InitialContext();
+            context = new InitialContext();
 
-            myBeanSession = (EJBDemo) context2.lookup("java:module/Lab3");
+            myBeanSession = (EJBDemo) context.lookup("java:module/Lab3");
         } catch(Exception e) {
             e.printStackTrace();
         }
 
-        request.getSession().setAttribute(SESSION_KEY, myBeanSession);
+        session.setAttribute(SESSION_KEY, myBeanSession);
     }
 
-    try {
-        context = new InitialContext();
+    if(isPost) {
 
-        myBean = (EJBDemo) context.lookup("java:module/Lab3");
-    } catch(Exception e) {
-        e.printStackTrace();
+        v1 = request.getParameter("login");
+        v2 = request.getParameter("pass");
+
+        myBeanSession.login(v1, v2);
+
+        response.setHeader("Refresh", "0;");
+        return;
     }
 %>
 
@@ -101,29 +109,13 @@
 <body>
 
     <div class="container">
-        <%
-            boolean isPost = "POST".equals(request.getMethod());
-
-            String message = "";
-
-            String v1 = null;
-            String v2 = null;
-
-            if(isPost) {
-
-                v1 = request.getParameter("login");
-                v2 = request.getParameter("pass");
-
-                myBean.login(v1, v2);
-            }
-        %>
 
         <div class="message-block">
             <%= message %>
         </div>
 
         <div class="user-status">
-            <%= myBean.getMessage( v1 ) %>
+            <%= myBeanSession.getMessage("") %>
         </div>
 
         <form class="form-select-button" action="index.jsp" method="post">

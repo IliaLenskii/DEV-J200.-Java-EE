@@ -12,30 +12,33 @@ import java.util.HashMap;
 @Remote(EJBDemo.class)
 public class MyBean implements EJBDemo {
     private boolean isAuthorized = false;
+    private String Login;
     private HashMap<String, Integer> showCounter = new HashMap<>();
 
     @Override
-    public String getMessage (String login){
+    public String getMessage(String login) {
+
+        return this.getMessage();
+    }
+
+    private String getMessage() {
         String m1 = "Access denied";
         String m2 = "This important message for you!";
 
-        if(login == null || login.equals(""))
-            return m1;
-
-        if(!showCounter.containsKey(login)) {
+        if(!showCounter.containsKey(this.Login)) {
 
             return m1;
         }
 
-        Integer va = showCounter.get(login);
+        Integer va = showCounter.get(this.Login);
 
         --va;
 
-        showCounter.remove(login);
+        showCounter.remove(this.Login);
 
         if (va != 0) {
 
-            showCounter.put(login, va);
+            showCounter.put(this.Login, va);
 
             return m2;
         }
@@ -60,11 +63,17 @@ public class MyBean implements EJBDemo {
 
             if(!showCounter.containsKey(login)) {
 
-                showCounter.put(login, 3);
+                showCounter.put(login, 4);
             }
         }
 
         this.isAuthorized = isAuth;
+        this.Login = login;
+
+        return this.isAuthorized;
+    }
+
+    public boolean getIsAuthorized() {
 
         return this.isAuthorized;
     }
