@@ -541,3 +541,9 @@ nbdist/
 /binary.bin
 /convertFromBinary.txt
 /lab1/.idea
+/lab5/nbproject/private/
+/lab5/lab5-war/nbproject/private/
+/lab5/lab5-ejb/nbproject/private/
+/lab5/nbproject
+/lab5/lab5-ejb/nbproject
+/lab5/lab5-war/nbproject
