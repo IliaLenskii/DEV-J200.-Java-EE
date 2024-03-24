@@ -533,7 +533,7 @@ javadoc/
 
 # lock file, a part of Oracle Credential Store Framework
 cwallet.sso.lck### NetBeans template
-nbproject/private/
+nbproject/
 nbbuild/
 dist/
 nbdist/
@@ -541,9 +541,3 @@ nbdist/
 /binary.bin
 /convertFromBinary.txt
 /lab1/.idea
-/lab5/nbproject/private/
-/lab5/lab5-war/nbproject/private/
-/lab5/lab5-ejb/nbproject/private/
-/lab5/nbproject
-/lab5/lab5-ejb/nbproject
-/lab5/lab5-war/nbproject
